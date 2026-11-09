@@ -1,6 +1,6 @@
 # High-Level Design Document — Silent Dynamic Tracker (SDT)
 
-**Version:** 1.1  
+**Version:** 1.2  
 **Date:** 2026-11-09  
 **Based on:** [001_initial.md](../../requirements/001_initial.md)  
 **Status:** Draft
@@ -119,9 +119,15 @@ sequenceDiagram
     User->>App: Tap "Save Log"
     App->>App: Resolve target date (midnight rollover §4.6)
 
-    App->>API: GET /current.json?q={location}&aqi=yes
-    API-->>App: Weather + AQI response
-    App->>App: Map us-epa-index → text label (§4.5)
+    alt Target date is today or yesterday
+        App->>API: GET /current.json?q={location}&aqi=yes
+        API-->>App: Weather + AQI response
+        App->>App: Map us-epa-index → text label (§4.5)
+    else Target date > 1 day in the past
+        App->>App: Set environmental_data: null
+        App-->>User: Toast: "Weather unavailable for past dates. You can add it manually."
+    end
+
     App->>App: Build daily JSON payload
 
     App->>Drive: Check if logs/YYYY-MM-DD.json exists
@@ -180,7 +186,9 @@ stateDiagram-v2
 #### 4.2.2 Save Sync (Log Commit)
 
 1. Resolve target date (apply midnight rollover logic — see §4.6).
-2. Fire WeatherAPI.com call using user's location string.
+2. **Date eligibility check** (see §4.5.5):
+   - If target date is **today or yesterday** → call WeatherAPI.com for real-time weather + AQI.
+   - If target date is **> 1 day in the past** → skip API call, set `environmental_data: null`, show info toast: *"Weather data unavailable for past dates. You can add it manually."*
 3. Construct daily payload JSON from in-memory session selections.
 4. Check if `logs/YYYY-MM-DD.json` exists on Drive:
    - **Exists →** Download, shallow-merge (preserve existing keys, overwrite/append updated keys), upload merged file.
@@ -278,7 +286,7 @@ flowchart TD
 
 ### 4.5 Environment Service — WeatherAPI.com
 
-SDT uses **WeatherAPI.com** as a single unified provider for both weather and air quality data. One GET request returns everything needed.
+SDT uses **WeatherAPI.com** as a single unified provider for both weather and air quality data. One GET request returns everything needed. The API is only called for **current or near-current dates**; past dates receive `null` environmental data that users can fill in manually.
 
 #### 4.5.1 API Integration
 
@@ -351,9 +359,9 @@ function mapEpaIndexToText(epaIndex) {
 
 #### 4.5.3 Impact on Data Schema
 
-With the EPA text mapping, the data stored in each file becomes:
+With the EPA text mapping and manual edit support, the data stored in each file becomes:
 
-**Daily payload** (`logs/YYYY-MM-DD.json`) — stores both raw and mapped values:
+**Daily payload** (`logs/YYYY-MM-DD.json`) — stores both raw and mapped values, plus a `source` indicator:
 ```json
 {
   "environmental_data": {
@@ -361,10 +369,19 @@ With the EPA text mapping, the data stored in each file becomes:
     "condition": "Clear",
     "aqi": "Moderate",
     "aqi_numeric": 2,
-    "pm25": 36.4
+    "pm25": 36.4,
+    "source": "api"
   }
 }
 ```
+
+The `source` field tracks where the environmental data came from:
+
+| `source` value | Meaning |
+|---|---|
+| `"api"` | Auto-fetched from WeatherAPI.com at save time. |
+| `"manual"` | Manually entered or edited by the user. |
+| `null` / absent | No environmental data available (past date, API failure, not yet filled). |
 
 **Summary index** (`summary_index.json`) — stores human-readable text:
 ```json
@@ -377,28 +394,73 @@ With the EPA text mapping, the data stored in each file becomes:
 }
 ```
 
-> **Note:** `aqi_summary` is now a text string (e.g. `"Moderate"`) rather than a numeric value. The raw numeric `us-epa-index` is preserved in the daily payload as `aqi_numeric` for filtering and analytics purposes.
+> **Note:** `aqi_summary` is a text string (e.g. `"Moderate"`) rather than a numeric value. When `environmental_data` is `null`, `weather_summary` and `aqi_summary` are also `null` in the index — until the user manually fills them in.
 
-#### 4.5.4 Error Handling
+#### 4.5.4 Error Handling & Date Eligibility
 
 ```mermaid
 flowchart TD
-    SAVE["User taps Save Log"] --> CALL["Call WeatherAPI.com"]
+    SAVE["User taps Save Log"] --> DATE{"Target date<br/>within last 1 day?"}
+
+    DATE -->|"Today or yesterday"| CALL["Call WeatherAPI.com"]
     CALL --> CHECK{Response OK?}
 
     CHECK -->|200 OK| EXTRACT["Extract weather + AQI data"]
     EXTRACT --> MAP["Map us-epa-index → text label"]
-    MAP --> ATTACH["Attach environmental_data to payload"]
+    MAP --> ATTACH["Attach environmental_data to payload<br/>source: api"]
 
-    CHECK -->|Error / Timeout| NULL["Set environmental_data: null"]
-    NULL --> TOAST["Show non-blocking toast:<br/>Weather data unavailable"]
-    TOAST --> PROCEED["Save log anyway to Drive"]
+    CHECK -->|Error / Timeout| APIFAIL["Set environmental_data: null"]
+    APIFAIL --> TOAST1["Toast: Weather data unavailable.<br/>You can add it manually."]
+    TOAST1 --> PROCEED
+
+    DATE -->|"> 1 day in the past"| SKIP["Set environmental_data: null"]
+    SKIP --> TOAST2["Toast: Weather unavailable for<br/>past dates. You can add it manually."]
+    TOAST2 --> PROCEED["Save log to Drive"]
 
     ATTACH --> PROCEED
 ```
 
-- If the API call fails or times out, save the log anyway with `environmental_data: null`.
-- Surface a non-blocking toast notification: *"Weather data unavailable — your log was saved without it."*
+**Rules:**
+- **Today or yesterday** → call WeatherAPI.com. If it fails, save with `environmental_data: null`.
+- **> 1 day in the past** → skip the API call entirely. Save with `environmental_data: null`.
+- In both `null` cases, show an informational (non-blocking) toast notifying the user they can add weather/AQI data manually.
+
+#### 4.5.5 Manual Environmental Data Editing
+
+Users can **manually enter or edit** environmental data on any saved entry — regardless of whether it was auto-fetched, failed, or skipped due to a past date.
+
+```mermaid
+flowchart TD
+    OPEN["User opens a saved day's log<br/>(history view)"] --> VIEW{"environmental_data?"}
+
+    VIEW -->|"Has data (source: api)"| SHOW["Display weather/AQI values<br/>with edit icon ✏️"]
+    VIEW -->|"null / missing"| EMPTY["Display placeholder:<br/>No weather data — tap to add"]
+
+    SHOW --> EDIT["User taps edit ✏️"]
+    EMPTY --> EDIT
+
+    EDIT --> FORM["Inline edit form:<br/>• Temperature (text)<br/>• Condition (text)<br/>• AQI (dropdown: Good → Hazardous)<br/>• PM2.5 (number, optional)"]
+
+    FORM --> SAVEEDIT["User taps Save"]
+    SAVEEDIT --> UPDATE["Update environmental_data<br/>in daily payload<br/>source: manual"]
+    UPDATE --> DRIVE["Upload updated payload to Drive"]
+    DRIVE --> INDEX["Update weather_summary +<br/>aqi_summary in summary_index"]
+    INDEX --> UPLOAD["Upload updated index to Drive"]
+```
+
+**Editable fields:**
+
+| Field | Input Type | Validation |
+|---|---|---|
+| Temperature | Free text (e.g. `"28C"`) | Optional — any string accepted |
+| Condition | Free text (e.g. `"Partly Cloudy"`) | Optional — any string accepted |
+| AQI | Dropdown: Good, Moderate, Unhealthy for Sensitive Groups, Unhealthy, Very Unhealthy, Hazardous | Maps to `aqi_numeric` 1–6 automatically |
+| PM2.5 | Number input | Optional — non-negative decimal |
+
+**Behaviour:**
+- Editing sets `source: "manual"` on the environmental data block.
+- The update follows the same Drive write path as a normal save — update the daily payload, then upsert the summary index entry with updated `weather_summary` and `aqi_summary`.
+- Manual edits are allowed on **any** entry: entries where the API succeeded, entries where the API failed, and entries for past dates that never called the API.
 
 ### 4.6 Midnight Rollover Logic
 
@@ -517,9 +579,15 @@ flowchart TD
     J --> K
 
     K --> L["Resolve date (midnight rollover)"]
-    L --> M["Call WeatherAPI.com<br/>GET /current.json?q=location&aqi=yes"]
+    L --> DATE{"Target date within<br/>last 1 day?"}
+
+    DATE -->|"Today / yesterday"| M["Call WeatherAPI.com<br/>GET /current.json?q=location&aqi=yes"]
     M --> N["Map us-epa-index → text label"]
     N --> O["Build daily payload JSON"]
+
+    DATE -->|"> 1 day in the past"| SKIP["environmental_data: null<br/>Toast: add manually later"]
+    SKIP --> O
+
     O --> P{"Existing log for this date?"}
 
     P -->|Yes| Q["Download existing → shallow merge"]
@@ -567,6 +635,7 @@ flowchart TD
 | **Shallow merge on save** | Supports partial logging (daytime + nighttime). | Cannot track granular field-level history or diffs. |
 | **Manual location** | Privacy, no GPS battery drain. | Slight friction; user must type city name each session. |
 | **WeatherAPI.com (single provider)** | One GET call returns both weather and AQI. Free tier available. Reduces integration complexity. | Single point of failure for environmental data. Mitigated by graceful fallback (save without env data). |
+| **Real-time only, manual edit for past dates** | Free tier only supports `/current.json`. Keeps costs at zero. Manual editing gives users full control. | Past-date entries require manual input for weather/AQI. Acceptable since primary use case is same-day logging. |
 | **EPA text labels in index** | Human-readable summaries without needing a lookup table at read time. | Slightly larger index entries. Raw numeric value preserved in daily payload for filtering. |
 | **Client-side zip/CSV export** | No server needed. Fully stateless. | Large archives may be slow on low-end mobile devices. |
 | **Day Mode as default** | Broader usability across all times of day. | Late-night users must toggle to Night Mode (or rely on system `prefers-color-scheme`). |
