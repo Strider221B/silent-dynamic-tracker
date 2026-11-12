@@ -3,7 +3,7 @@ Can you go ahead and execute:
 ./documentation/plans/01_project_foundation.md
 
 Ensure you read:
-./documentation/prompts/coding_standards.md
+./documentation/coding_standards
 
 python env:
 source ~/python_envs/p313_llm/bin/activate
@@ -15,7 +15,7 @@ Design:
 ./documentation/design/high_level
 
 Ensure you read:
-./documentation/prompts/coding_standards.md
+./documentation/coding_standards
 
 python env:
 source ~/python_envs/p313_llm/bin/activate
