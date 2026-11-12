@@ -1,6 +1,6 @@
-# Adspire Coding Standards
+# Coding Standards
 
-> **This document is the single source of truth for all coding standards on the Adspire project.**
+> **This document is the single source of truth for all coding standards on the project.**
 > Every AI agent, prompt, and developer MUST adhere to these rules — regardless of which prompt template or workflow they use.
 > If your prompt does not explicitly mention a rule below, the rule still applies.
 
