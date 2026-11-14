@@ -1,38 +1,75 @@
+.appWrapper {
+  min-height: 100vh;
+  background-color: var(--sdt-bg-primary, #fafafa);
+  color: var(--sdt-text-primary, #212121);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
 .tabNavigation {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 12px;
   padding: 12px 16px;
-  background-color: #161616;
-  border-bottom: 1px solid #333;
+  background-color: var(--sdt-bg-surface, #ffffff);
+  border-bottom: 1px solid var(--sdt-border, #e0e0e0);
+}
+
+.tabList {
+  display: flex;
+  gap: 8px;
+}
+
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .tabButton {
-  min-height: 44px;
-  padding: 8px 20px;
+  min-height: 48px;
+  padding: 8px 16px;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
   background-color: transparent;
-  color: #888;
+  color: var(--sdt-text-muted, #888888);
   border: 1px solid transparent;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .tabButton:hover {
-  color: #eee;
-  background-color: #222;
+  color: var(--sdt-text-primary, #212121);
+  background-color: var(--sdt-bg-card, #f0f0f0);
 }
 
 .activeTabButton {
-  min-height: 44px;
-  padding: 8px 20px;
+  min-height: 48px;
+  padding: 8px 16px;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 700;
-  background-color: #262626;
-  color: #fff;
-  border: 1px solid #444;
+  background-color: var(--sdt-bg-card, #e8e8e8);
+  color: var(--sdt-text-primary, #212121);
+  border: 1px solid var(--sdt-border, #cccccc);
   cursor: pointer;
+}
+
+.exportButton {
+  min-height: 48px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: transparent;
+  color: inherit;
+  border: 1px solid var(--sdt-border, #cccccc);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.exportButton:hover {
+  background-color: var(--sdt-bg-card, #e8e8e8);
 }

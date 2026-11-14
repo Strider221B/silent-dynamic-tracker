@@ -1,0 +1,37 @@
+.responsiveContainer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+/* Mobile-first: < 768px */
+.responsiveStack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.touchTarget {
+  min-height: 48px;
+  min-width: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* Desktop layout: >= 768px */
+@media (min-width: 768px) {
+  .responsiveContainer {
+    padding: 24px;
+  }
+
+  .responsiveGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+}

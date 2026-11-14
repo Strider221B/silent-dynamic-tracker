@@ -65,6 +65,25 @@ export class DriveService {
   }
 
   /**
+   * Reads raw file content as text by file ID.
+   */
+  public async readFileContent(fileId: string): Promise<string | null> {
+    const endpoint = `${DRIVE_API_BASE}/files/${fileId}?alt=media`;
+    const response = await fetch(endpoint, {
+      method: "GET",
+      headers: this._buildHeaders(),
+    });
+    if (response.status === HTTP_STATUS_NOT_FOUND) {
+      return null;
+    }
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new DriveApiError(errorText, response.status, endpoint);
+    }
+    return response.text();
+  }
+
+  /**
    * Reads and parses a JSON file from Google Drive, returning null if not found.
    */
   public async readJsonFile<T>(
@@ -75,21 +94,8 @@ export class DriveService {
     if (!fileId) {
       return null;
     }
-
-    const endpoint = `${DRIVE_API_BASE}/files/${fileId}?alt=media`;
-    const response = await fetch(endpoint, {
-      method: "GET",
-      headers: this._buildHeaders(),
-    });
-
-    if (response.status === HTTP_STATUS_NOT_FOUND) {
-      return null;
-    }
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new DriveApiError(errorText, response.status, endpoint);
-    }
-    return (await response.json()) as T;
+    const content = await this.readFileContent(fileId);
+    return content ? (JSON.parse(content) as T) : null;
   }
 
   /**
