@@ -1,0 +1,46 @@
+.stickyBar {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background: linear-gradient(
+    to top,
+    rgba(18, 18, 18, 1) 75%,
+    rgba(18, 18, 18, 0) 100%
+  );
+  display: flex;
+  justify-content: center;
+  z-index: 100;
+}
+
+.saveButton {
+  min-height: 48px;
+  min-width: 200px;
+  width: 100%;
+  max-width: 480px;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 24px;
+  border: none;
+  background-color: #646cff;
+  color: #fff;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.saveButton:hover:not(:disabled) {
+  background-color: #535bf2;
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.saveButton:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}

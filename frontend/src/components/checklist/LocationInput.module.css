@@ -1,0 +1,32 @@
+.locationContainer {
+  margin-bottom: 24px;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+}
+
+.locationLabel {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #f0f0f0;
+}
+
+.locationInput {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background-color: #121212;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.locationInput:focus {
+  outline: 2px solid #646cff;
+  border-color: #646cff;
+}

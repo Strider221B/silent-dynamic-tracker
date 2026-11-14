@@ -1,4 +1,5 @@
 import AuthBarrier from "@/components/auth/AuthBarrier";
+import ChecklistDashboard from "@/components/checklist/ChecklistDashboard";
 import AuthProvider from "@/context/AuthContext";
 import DriveSyncProvider from "@/context/DriveSyncContext";
 
@@ -10,9 +11,7 @@ export function App() {
     <AuthProvider>
       <DriveSyncProvider>
         <AuthBarrier>
-          <div data-testid="app-dashboard">
-            <h1>Silent Dynamic Tracker</h1>
-          </div>
+          <ChecklistDashboard />
         </AuthBarrier>
       </DriveSyncProvider>
     </AuthProvider>
@@ -20,4 +19,3 @@ export function App() {
 }
 
 export default App;
-

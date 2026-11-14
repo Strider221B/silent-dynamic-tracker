@@ -4,6 +4,7 @@ import {
   DRIVE_UPLOAD_BASE,
   HTTP_STATUS_NOT_FOUND,
   HTTP_STATUS_UNAUTHORIZED,
+  INDEX_FILE_NAME,
   LOGS_DIR_NAME,
   MIME_TYPE_FOLDER,
   MIME_TYPE_JSON,
@@ -11,6 +12,7 @@ import {
 import { DriveApiError } from "@/errors/DriveApiError";
 import type { GoogleAuthService } from "@/services/GoogleAuthService";
 import type { IDailyPayload } from "@/types/dailyPayload";
+import type { ISummaryIndex } from "@/types/summaryIndex";
 
 interface IDriveFileListResponse {
   files?: Array<{ id: string; name: string; mimeType?: string }>;
@@ -135,6 +137,20 @@ export class DriveService {
   ): Promise<string> {
     const fileName = `${date}.json`;
     return this.writeJsonFile<IDailyPayload>(fileName, logsFolderId, payload);
+  }
+
+  /**
+   * Writes the summary index file into the app folder.
+   */
+  public async writeSummaryIndexFile(
+    appFolderId: string,
+    index: ISummaryIndex,
+  ): Promise<string> {
+    return this.writeJsonFile<ISummaryIndex>(
+      INDEX_FILE_NAME,
+      appFolderId,
+      index,
+    );
   }
 
   /**

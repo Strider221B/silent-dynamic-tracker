@@ -314,6 +314,20 @@ describe("DriveService", () => {
       const fileId = await service.writeDailyPayload("2026-11-12", "logs-folder-id", mockPayload);
       expect(fileId).toBe("created-payload-id");
     });
+
+    it("should write summary index file to app folder", async () => {
+      globalThis.fetch = vi
+        .fn()
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify({ files: [] }), { status: 200 }),
+        )
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify({ id: "index-file-id" }), { status: 200 }),
+        );
+
+      const fileId = await service.writeSummaryIndexFile("app-folder-id", []);
+      expect(fileId).toBe("index-file-id");
+    });
   });
 
   describe("listAllLogFiles", () => {
