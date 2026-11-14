@@ -1,0 +1,31 @@
+.themeToggleButton {
+  min-width: 48px;
+  min-height: 48px;
+  padding: 8px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: transparent;
+  color: inherit;
+  border: 1px solid var(--sdt-border, #444444);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.themeToggleButton:hover {
+  background-color: var(--sdt-bg-card, rgba(255, 255, 255, 0.08));
+}
+
+.themeIcon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.themeLabel {
+  font-size: 13px;
+}

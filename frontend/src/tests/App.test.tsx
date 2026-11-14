@@ -86,4 +86,45 @@ describe("App", () => {
     fireEvent.click(screen.getByRole("tab", { name: "Checklist" }));
     expect(screen.getByRole("heading", { name: "Daily Tracker" })).toBeInTheDocument();
   });
+
+  it("should open export modal and render theme toggle when authenticated", () => {
+    vi.mocked(useAuth).mockReturnValue({
+      token: "valid-token",
+      isAuthenticated: true,
+      isLoading: false,
+      authService: {} as GoogleAuthService,
+      login: vi.fn(),
+      logout: vi.fn(),
+    });
+
+    vi.mocked(useDriveSync).mockReturnValue({
+      appFolderId: "app-id",
+      logsFolderId: "logs-id",
+      config: {
+        version: "1.0",
+        standard_questions: [],
+        custom_saved_questions: [],
+      },
+      summaryIndex: [],
+      isBootSyncing: false,
+      syncError: null,
+      driveService: {} as never,
+      saveConfig: vi.fn(),
+      saveSummaryIndex: vi.fn(),
+      retryBootSync: vi.fn(),
+    });
+
+    render(<App />);
+
+    expect(
+      screen.getByRole("button", { name: "Switch to night mode" }),
+    ).toBeInTheDocument();
+
+    const exportBtn = screen.getByRole("button", { name: "Export" });
+    expect(exportBtn).toBeInTheDocument();
+
+    fireEvent.click(exportBtn);
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByText("Export Data")).toBeInTheDocument();
+  });
 });
