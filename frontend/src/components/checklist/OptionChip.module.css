@@ -1,0 +1,70 @@
+.chipWrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px;
+}
+
+.chipButton {
+  min-height: 48px;
+  min-width: 48px;
+  padding: 10px 16px;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 24px;
+  border: 2px solid #444;
+  background-color: #222;
+  color: #eee;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease-in-out;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.chipButton:hover {
+  background-color: #333;
+}
+
+.chipButton:focus-visible {
+  outline: 3px solid #646cff;
+  outline-offset: 2px;
+}
+
+.selected {
+  background-color: #646cff;
+  border-color: #747bff;
+  color: #fff;
+}
+
+.temporary {
+  border-style: dashed;
+}
+
+.savePermanentButton {
+  min-height: 48px;
+  min-width: 48px;
+  padding: 6px 10px;
+  font-size: 13px;
+  border-radius: 12px;
+  border: 1px solid #555;
+  background-color: #2a2a2a;
+  color: #aaa;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+}
+
+.savePermanentButton:hover {
+  background-color: #3a3a3a;
+  color: #fff;
+}
+
+.savePermanentButton:focus-visible {
+  outline: 2px solid #646cff;
+  outline-offset: 2px;
+}

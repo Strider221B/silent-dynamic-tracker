@@ -209,15 +209,15 @@ npm run test -- --coverage
 
 | Requirement | Rule | Verified |
 |---|---|---|
-| Single component/hook/service per file | Frontend §8 | [ ] |
-| File name matches export name | Frontend §8 | [ ] |
-| Member ordering in components & services | Frontend §5 | [ ] |
-| Touch targets min 48×48 dp | PRD §2.1 | [ ] |
-| Functions ≤ 30 lines logic, JSX ≤ 50 lines | Frontend §6 | [ ] |
-| File ≤ 300 lines | Frontend §7 | [ ] |
-| Strict TypeScript (no `any`) | Frontend §12 | [ ] |
-| No magic strings/numbers | Frontend §10 | [ ] |
-| Midnight rollover prompt (00:00–04:59) | HLD §4.6 | [ ] |
-| Shallow merge on existing log | HLD §4.2.3 | [ ] |
-| Test coverage ≥ 90% | Frontend §9, §14 | [ ] |
+| Single component/hook/service per file | Frontend §8 | [x] |
+| File name matches export name | Frontend §8 | [x] |
+| Member ordering in components & services | Frontend §5 | [x] |
+| Touch targets min 48×48 dp | PRD §2.1 | [x] |
+| Functions ≤ 30 lines logic, JSX ≤ 50 lines | Frontend §6 | [x] |
+| File ≤ 300 lines | Frontend §7 | [x] |
+| Strict TypeScript (no `any`) | Frontend §12 | [x] |
+| No magic strings/numbers | Frontend §10 | [x] |
+| Midnight rollover prompt (00:00–04:59) | HLD §4.6 | [x] |
+| Shallow merge on existing log | HLD §4.2.3 | [x] |
+| Test coverage ≥ 90% | Frontend §9, §14 | [x] |
 
