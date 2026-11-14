@@ -206,15 +206,15 @@ npm run test -- --coverage
 
 | Requirement | Rule | Verified |
 |---|---|---|
-| Single component/hook/service per file | Frontend §8 | [ ] |
-| File name matches export name | Frontend §8 | [ ] |
-| Member ordering in components & services | Frontend §5 | [ ] |
-| Functions ≤ 30 lines logic, JSX ≤ 50 lines | Frontend §6 | [ ] |
-| File ≤ 300 lines | Frontend §7 | [ ] |
-| Strict TypeScript (no `any`) | Frontend §12 | [ ] |
-| No magic strings/numbers | Frontend §10 | [ ] |
-| In-memory filtering (zero network on browse) | HLD §4.7.2 | [ ] |
-| Lazy payload hydration on tap | HLD §4.7.2 | [ ] |
-| Manual environmental editing (`source: "manual"`) | HLD §4.5.5 | [ ] |
-| Test coverage ≥ 90% | Frontend §9, §14 | [ ] |
+| Single component/hook/service per file | Frontend §8 | [x] |
+| File name matches export name | Frontend §8 | [x] |
+| Member ordering in components & services | Frontend §5 | [x] |
+| Functions ≤ 30 lines logic, JSX ≤ 50 lines | Frontend §6 | [x] |
+| File ≤ 300 lines | Frontend §7 | [x] |
+| Strict TypeScript (no `any`) | Frontend §12 | [x] |
+| No magic strings/numbers | Frontend §10 | [x] |
+| In-memory filtering (zero network on browse) | HLD §4.7.2 | [x] |
+| Lazy payload hydration on tap | HLD §4.7.2 | [x] |
+| Manual environmental editing (`source: "manual"`) | HLD §4.5.5 | [x] |
+| Test coverage ≥ 90% | Frontend §9, §14 | [x] |
 

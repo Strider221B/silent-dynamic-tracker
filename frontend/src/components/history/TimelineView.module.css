@@ -1,0 +1,29 @@
+.timelineContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.yearSection {
+  margin-bottom: 28px;
+}
+
+.yearHeading {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 14px 0;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #333;
+}
+
+.emptyState {
+  padding: 32px 16px;
+  text-align: center;
+  color: #888;
+  font-size: 15px;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  border: 1px dashed #333;
+  margin: 16px 0;
+}
