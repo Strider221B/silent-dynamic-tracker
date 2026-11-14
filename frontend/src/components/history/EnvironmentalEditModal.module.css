@@ -1,0 +1,105 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modalContent {
+  background-color: #222;
+  border: 1px solid #444;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 440px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.modalTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 16px 0;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+.formLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: #bbb;
+  margin-bottom: 4px;
+}
+
+.inputField,
+.selectField {
+  min-height: 44px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background-color: #161616;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+}
+
+.inputField:focus,
+.selectField:focus {
+  border-color: #1976d2;
+}
+
+.buttonRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.cancelButton {
+  min-height: 44px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background-color: transparent;
+  border: 1px solid #555;
+  color: #ccc;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cancelButton:hover {
+  background-color: #333;
+}
+
+.saveButton {
+  min-height: 44px;
+  padding: 8px 20px;
+  border-radius: 6px;
+  background-color: #2e7d32;
+  border: 1px solid #388e3c;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.saveButton:hover {
+  background-color: #388e3c;
+}
+
+.saveButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,0 +1,45 @@
+.questionRow {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.questionLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: #aaa;
+  margin-bottom: 4px;
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.optionChip {
+  min-height: 36px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  background-color: #222;
+  color: #ccc;
+  border: 1px solid #444;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.optionChip:hover {
+  background-color: #333;
+}
+
+.activeOptionChip {
+  min-height: 36px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  background-color: #1976d2;
+  color: #fff;
+  border: 1px solid #2196f3;
+  cursor: pointer;
+}

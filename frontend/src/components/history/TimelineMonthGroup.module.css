@@ -1,0 +1,17 @@
+.monthSection {
+  margin-bottom: 20px;
+}
+
+.monthHeading {
+  font-size: 16px;
+  font-weight: 600;
+  color: #bbb;
+  margin: 0 0 10px 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.entryList {
+  display: flex;
+  flex-direction: column;
+}

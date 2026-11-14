@@ -1,0 +1,117 @@
+.filterBarContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  border: 1px solid #333;
+  margin-bottom: 20px;
+}
+
+.topControlRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.timeFilterGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.filterChip {
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  background-color: #262626;
+  color: #ccc;
+  border: 1px solid #444;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.filterChip:hover {
+  background-color: #333;
+}
+
+.activeFilterChip {
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  background-color: #2e7d32;
+  color: #fff;
+  border: 1px solid #388e3c;
+  cursor: pointer;
+}
+
+.actionControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modeToggleGroup {
+  display: flex;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #444;
+}
+
+.modeBtn {
+  min-height: 40px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: #222;
+  color: #888;
+  border: none;
+  cursor: pointer;
+}
+
+.activeModeBtn {
+  min-height: 40px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  background-color: #1976d2;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.resetButton {
+  min-height: 40px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 6px;
+  background-color: #333;
+  color: #eee;
+  border: 1px solid #555;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.resetButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.resetButton:not(:disabled):hover {
+  background-color: #444;
+  border-color: #777;
+}
+
+.mcqMatrix {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+  border-top: 1px solid #2a2a2a;
+}

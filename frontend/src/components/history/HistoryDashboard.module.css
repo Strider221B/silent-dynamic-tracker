@@ -1,0 +1,32 @@
+.dashboardContainer {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 16px 16px 80px 16px;
+  position: relative;
+}
+
+.dashboardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #333;
+}
+
+.titleArea {
+  display: flex;
+  flex-direction: column;
+}
+
+.mainTitle {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  color: #fff;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #888;
+}
